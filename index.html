@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartAttend - Attendance Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📊 SmartAttend</h1>
+            <p class="subtitle">Attendance Management System</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="login">Login</button>
+            <button class="tab-btn hidden" data-tab="students">Students</button>
+            <button class="tab-btn hidden" data-tab="attendance">Attendance</button>
+            <button class="tab-btn hidden" data-tab="admin">🔐 Admin Panel</button>
+        </nav>
+
+        <div class="user-info">
+            <span id="loggedInUser">Not logged in</span>
+            <button id="logoutBtn" style="display: none;" class="logout-btn">Logout</button>
+        </div>
+
+        <section id="register" class="tab-content hidden">
+            <h2>Register New User</h2>
+            <form id="registerForm" class="form">
+                <div class="form-group">
+                    <label for="regName">Name:</label>
+                    <input type="text" id="regName" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email:</label>
+                    <input type="email" id="regEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password:</label>
+                    <input type="password" id="regPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <div id="registerMsg" class="message"></div>
+        </section>
+
+        <section id="login" class="tab-content active">
+            <h2>Login</h2>
+            <form id="loginForm" class="form">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div id="loginMsg" class="message"></div>
+
+            <div class="register-section" id="registerSection">
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+                <h3>Don't have an account?</h3>
+                <form id="registerForm2" class="form">
+                    <div class="form-group">
+                        <label for="regName2">Name:</label>
+                        <input type="text" id="regName2" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail2">Email:</label>
+                        <input type="email" id="regEmail2" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword2">Password:</label>
+                        <input type="password" id="regPassword2" required placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                <div id="registerMsg2" class="message"></div>
+            </div>
+
+            <!-- Admin Registration Section -->
+            <div class="admin-register-section" id="adminRegisterSection">
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e0e0e0;">
+                <h3>🔐 Create Admin Account</h3>
+                <form id="adminRegisterForm" class="form">
+                    <div class="form-group">
+                        <label for="adminRegName">Full Name:</label>
+                        <input type="text" id="adminRegName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminRegEmail">Admin Email:</label>
+                        <input type="email" id="adminRegEmail" required placeholder="Enter admin email">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminRegPassword">Password:</label>
+                        <input type="password" id="adminRegPassword" required placeholder="Enter strong password">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminRegConfirmPassword">Confirm Password:</label>
+                        <input type="password" id="adminRegConfirmPassword" required placeholder="Confirm password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Admin Account</button>
+                </form>
+                <div id="adminRegisterMsg" class="message"></div>
+            </div>
+        </section>
+
+        <section id="students" class="tab-content">
+            <h2>Student Management</h2>
+            
+            <div class="form-section">
+                <h3>Add New Student</h3>
+                <form id="addStudentForm" class="form">
+                    <div class="form-group">
+                        <label for="studentId">Student ID:</label>
+                        <input type="number" id="studentId" required placeholder="e.g., 1">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentName">Name:</label>
+                        <input type="text" id="studentName" required placeholder="e.g., Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentCourse">Course:</label>
+                        <input type="text" id="studentCourse" required placeholder="e.g., BSIT">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </form>
+                <div id="addStudentMsg" class="message"></div>
+            </div>
+
+            <div class="data-section">
+                <h3>All Students</h3>
+                <table id="studentsTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsBody">
+                        <tr><td colspan="3" class="no-data">No students added yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="attendance" class="tab-content">
+            <h2>Attendance Management</h2>
+            
+            <div class="form-section">
+                <h3>Record Attendance</h3>
+                <form id="recordAttendanceForm" class="form">
+                    <div class="form-group">
+                        <label for="attStudentId">Student ID:</label>
+                        <input type="number" id="attStudentId" required placeholder="e.g., 1">
+                    </div>
+                    <div class="form-group">
+                        <label for="attDate">Date:</label>
+                        <input type="date" id="attDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="attStatus">Status:</label>
+                        <select id="attStatus" required>
+                            <option value="">Select Status</option>
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="Late">Late</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Record Attendance</button>
+                </form>
+                <div id="recordAttMsg" class="message"></div>
+            </div>
+
+            <div class="data-section">
+                <h3>Attendance Records</h3>
+                <table id="attendanceTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceBody">
+                        <tr><td colspan="3" class="no-data">No attendance records yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ADMIN SECTION -->
+        <section id="admin" class="tab-content">
+            <h2>🔐 Admin Dashboard</h2>
+            <div id="adminMsg" class="message"></div>
+
+            <!-- Admin Statistics -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <p class="stat-number" id="adminTotalUsers">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <p class="stat-number" id="adminTotalStudents">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Attendance</h3>
+                    <p class="stat-number" id="adminTotalAttendance">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Present</h3>
+                    <p class="stat-number present-stat" id="adminPresentCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Absent</h3>
+                    <p class="stat-number absent-stat" id="adminAbsentCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Late</h3>
+                    <p class="stat-number late-stat" id="adminLateCount">0</p>
+                </div>
+            </div>
+
+            <!-- Users Management -->
+            <div class="admin-section">
+                <h3>📋 User Management</h3>
+                <table id="usersTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="4" class="no-data">No users registered yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Students Management -->
+            <div class="admin-section">
+                <h3>👥 Student Management</h3>
+                <table id="studentsTableAdmin" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableAdminBody">
+                        <tr><td colspan="4" class="no-data">No students added yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Attendance Management -->
+            <div class="admin-section">
+                <h3>📅 Attendance Management</h3>
+                <table id="attendanceTableAdmin" class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableAdminBody">
+                        <tr><td colspan="4" class="no-data">No attendance records yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
